@@ -1,0 +1,62 @@
+{
+  "name": "project-name",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "scripts": {
+    "start": "npm run dev",
+    "deploy": "gulp compress && gulp deploy && rm public/archive.zip",
+    "build": "export NODE_ENV=production gulp clean && grunt modernizr && gulp build",
+    "dev": "gulp clean && grunt modernizr && gulp build && gulp browser"
+  },
+  "browserslist": [
+    "defaults"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.8",
+    "autoprefixer": "^10.4.2",
+    "babel-loader": "^8.2.3",
+    "browser-sync": "^2.27",
+    "css-loader": "^6.5.1",
+    "del": "^6.0.0",
+    "grunt": "^1.4.1",
+    "grunt-assemble": "^0.6.3",
+    "grunt-modernizr": "^3.0.2",
+    "grunt-responsive-images": "^1.10.1",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-filelist": "^2.0.5",
+    "gulp-group-css-media-queries": "^1.2.2",
+    "gulp-grunt": "^0.5.5",
+    "gulp-if": "^3.0.0",
+    "gulp-less": "^5.0.0",
+    "gulp-postcss": "^9.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-rsync": "0.0.9",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-zip": "^5.1.0",
+    "gulp.spritesmith": "^6.12.1",
+    "handlebars-helper-repeat": "~0.2.0",
+    "node-sass-tilde-importer": "^1.0.2",
+    "rimraf": "^3.0.2",
+    "sass": "^1.48.0",
+    "sass-loader": "^12.4.0",
+    "style-loader": "^3.3.1",
+    "vinyl-named": "^1.1.0",
+    "webpack": "^5.66.0",
+    "webpack-stream": "^7.0.0"
+  },
+  "dependencies": {
+    "destyle.css": "^3.0.2",
+    "howler": "^2.2.3",
+    "jquery": "^3.6.0",
+    "slick-carousel": "^1.8.1",
+    "swiper": "^7.4.1"
+  }
+}

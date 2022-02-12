@@ -4,8 +4,6 @@
 
 <head>
 
-    <!-- Google Tag Manager -->
-    <!-- End Google Tag Manager -->
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
@@ -538,12 +536,7 @@
 </svg>
 
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WJ5X27M"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe>
-</noscript>
-    <!-- End Google Tag Manager (noscript) -->
+ 
     <div class="wrapper ">
         <div class="header-wrap header-wrap-v2 no-compress with-banner">
             <header class="header header-2020">
@@ -2699,14 +2692,6 @@
 
     <div class="cd-top"></div>
   
-
-    <script>
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-WJ5X27M');
-    </script>
     <script src="https://cafe-anderson.ru/local/templates/anderson_new_design/js/jquery.js"></script>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=28814c4b-cb66-4cc3-8baa-48e067cad83a&lang=ru_RU" type="text/javascript"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkKwWBX_aeikBWKCOv2ypotnDmTNVp5AA" async defer></script>
@@ -2958,12 +2943,12 @@
     </script>
 
 
-    <link rel="stylesheet" href="css/main.min.css?v=1644526800">
+    <link rel="stylesheet" href="css/main.min.css?v=1644613200">
 
     
 
 
-<a href="#" class='js-popup-delivery' style="position: absolute; top: 0; right: 0; z-index: 10000;">Показать попап</a>
+<a href="#" class='popup-delivery__btn-open' style="display: none;">Показать попап</a>
 
 <div class="mfp-wrap popup-delivery" id="popup-delivery" tabindex="-1" style="overflow-x: hidden; overflow-y: auto;">
     <div class="mfp-container mfp-inline-holder">
@@ -2975,33 +2960,67 @@
                     <div id="comp_69bfdcdad2502a21fd92bcc10d315dd3">
                         <div class="popup-body popup-delivery__body">
                             
-                            <div class="popup-delivery__row">
-                                <div class="popup-delivery__col">
+                            <div class="popup-delivery__pane active" id="popup-delivery__yourself">
+                                <div class="popup-delivery__row">
+                                    <div class="popup-delivery__col">
 
-                                    <div class="popup-delivery__tabs">
-                                        <div class="popup-delivery__tabs__list">
-                                            <div class="popup-delivery__tabs__col">
-                                                <a href="#" class="popup-delivery__tabs__item active">Самовывоз</a>
-                                            </div>
-                                            <div class="popup-delivery__tabs__col">
-                                                <a href="#" class="popup-delivery__tabs__item">Доставка</a>
+                                        <div class="popup-delivery__tabs">
+                                            <div class="popup-delivery__tabs__list">
+                                                <div class="popup-delivery__tabs__col">
+                                                    <a href="#" data-target="yourself" class="popup-delivery__tabs__item active">Самовывоз</a>
+                                                </div>
+                                                <div class="popup-delivery__tabs__col">
+                                                    <a href="#" data-target="delivery" class="popup-delivery__tabs__item">Доставка</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="popup-delivery__input">
-                                        <input class="c-input" type="text" placeholder="Выберите интересующее вас кафе">
-                                    </div>
+                                        <div class="popup-delivery__input">
+                                            <input class="c-input" type="text" placeholder="Выберите интересующее вас кафе">
+                                        </div>
 
-                                    <div class="popup-delivery__submit">
-                                        <button class="c-button c-button__default">Выбрать</button>
+                                        <div class="popup-delivery__submit">
+                                            <button class="c-button c-button__default">Выбрать</button>
+                                        </div>
+                                        
                                     </div>
-                                    
+                                    <div class="popup-delivery__col">
+
+                                        <div class="popup-delivery__map" id="popup-delivery__yourself-map"></div>
+                                        
+                                    </div>
                                 </div>
-                                <div class="popup-delivery__col">
+                            </div>
 
-                                    <div class="popup-delivery__map"></div>
-                                    
+                            <div class="popup-delivery__pane" id="popup-delivery__delivery">
+                                <div class="popup-delivery__row">
+                                    <div class="popup-delivery__col">
+
+                                        <div class="popup-delivery__tabs">
+                                            <div class="popup-delivery__tabs__list">
+                                                <div class="popup-delivery__tabs__col">
+                                                    <a href="#" data-target="yourself" class="popup-delivery__tabs__item">Самовывоз</a>
+                                                </div>
+                                                <div class="popup-delivery__tabs__col">
+                                                    <a href="#" data-target="delivery" class="popup-delivery__tabs__item active">Доставка</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="popup-delivery__input">
+                                            <input class="c-input" type="text" placeholder="Начните вводить адрес">
+                                        </div>
+
+                                        <div class="popup-delivery__submit">
+                                            <button class="c-button c-button__default">Выбрать</button>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="popup-delivery__col">
+
+                                        <div class="popup-delivery__map" id="popup-delivery__delivery-map"></div>
+                                        
+                                    </div>
                                 </div>
                             </div>
 
@@ -3017,7 +3036,8 @@
 
 
     
-	<script src="js/bundle.js?v=1644526800"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-throttle-debounce@1.0.0/jquery.ba-throttle-debounce.min.js"></script>
+	<script src="js/bundle.js?v=1644613200"></script>
 
 	<style type="text/css">
 		.filelist {

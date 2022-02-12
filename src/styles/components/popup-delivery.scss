@@ -1,7 +1,16 @@
 .popup-delivery {
 	&__body {
+		padding: 4rem 6rem;
 		background: url(../images/popup-delivery/1.jpeg) 0 100% no-repeat;
 		background-size: 47% auto;
+	}
+
+	&__pane {
+		display: none;
+
+		&.active {
+			display: block;
+		}
 	}
 
 	&__row {
@@ -25,7 +34,6 @@
 	&__tabs {
 		padding: 10px;
 		border-radius: 5px;
-		box-shadow: 0 0 5px rgba(#000, 0.1);
 		background: #f4f4f4;
 
 		&__list {
@@ -46,6 +54,7 @@
 			padding: 0.9em;
 			text-align: center;
 			text-decoration: none !important;
+			white-space: nowrap;
 			color: #b5b5b5;
 
 			&::after {
@@ -93,5 +102,27 @@
 	&__map {
 		height: 100%;
 		background: #f3f3f3;
+	}
+}
+
+@media (max-width: 760px) {
+	.popup-delivery {
+		&__row {
+			flex-wrap: wrap;
+		}
+
+		&__col {
+			width: 100%;
+			min-height: auto;
+			margin-top: 4rem;
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+
+		&__map {
+			height: 50vh;
+		}
 	}
 }

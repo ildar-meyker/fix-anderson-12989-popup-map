@@ -4,7 +4,7 @@ layout: default.hbs
 ---
 
 
-<a href="#" class='js-popup-delivery' style="position: absolute; top: 0; right: 0; z-index: 10000;">Показать попап</a>
+<a href="#" class='popup-delivery__btn-open' style="display: none;">Показать попап</a>
 
 <div class="mfp-wrap popup-delivery" id="popup-delivery" tabindex="-1" style="overflow-x: hidden; overflow-y: auto;">
     <div class="mfp-container mfp-inline-holder">
@@ -16,33 +16,67 @@ layout: default.hbs
                     <div id="comp_69bfdcdad2502a21fd92bcc10d315dd3">
                         <div class="popup-body popup-delivery__body">
                             
-                            <div class="popup-delivery__row">
-                                <div class="popup-delivery__col">
+                            <div class="popup-delivery__pane active" id="popup-delivery__yourself">
+                                <div class="popup-delivery__row">
+                                    <div class="popup-delivery__col">
 
-                                    <div class="popup-delivery__tabs">
-                                        <div class="popup-delivery__tabs__list">
-                                            <div class="popup-delivery__tabs__col">
-                                                <a href="#" class="popup-delivery__tabs__item active">Самовывоз</a>
-                                            </div>
-                                            <div class="popup-delivery__tabs__col">
-                                                <a href="#" class="popup-delivery__tabs__item">Доставка</a>
+                                        <div class="popup-delivery__tabs">
+                                            <div class="popup-delivery__tabs__list">
+                                                <div class="popup-delivery__tabs__col">
+                                                    <a href="#" data-target="yourself" class="popup-delivery__tabs__item active">Самовывоз</a>
+                                                </div>
+                                                <div class="popup-delivery__tabs__col">
+                                                    <a href="#" data-target="delivery" class="popup-delivery__tabs__item">Доставка</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="popup-delivery__input">
-                                        <input class="c-input" type="text" placeholder="Выберите интересующее вас кафе">
-                                    </div>
+                                        <div class="popup-delivery__input">
+                                            <input class="c-input" type="text" placeholder="Выберите интересующее вас кафе">
+                                        </div>
 
-                                    <div class="popup-delivery__submit">
-                                        <button class="c-button c-button__default">Выбрать</button>
+                                        <div class="popup-delivery__submit">
+                                            <button class="c-button c-button__default">Выбрать</button>
+                                        </div>
+                                        
                                     </div>
-                                    
+                                    <div class="popup-delivery__col">
+
+                                        <div class="popup-delivery__map" id="popup-delivery__yourself-map"></div>
+                                        
+                                    </div>
                                 </div>
-                                <div class="popup-delivery__col">
+                            </div>
 
-                                    <div class="popup-delivery__map"></div>
-                                    
+                            <div class="popup-delivery__pane" id="popup-delivery__delivery">
+                                <div class="popup-delivery__row">
+                                    <div class="popup-delivery__col">
+
+                                        <div class="popup-delivery__tabs">
+                                            <div class="popup-delivery__tabs__list">
+                                                <div class="popup-delivery__tabs__col">
+                                                    <a href="#" data-target="yourself" class="popup-delivery__tabs__item">Самовывоз</a>
+                                                </div>
+                                                <div class="popup-delivery__tabs__col">
+                                                    <a href="#" data-target="delivery" class="popup-delivery__tabs__item active">Доставка</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="popup-delivery__input">
+                                            <input class="c-input" type="text" placeholder="Начните вводить адрес">
+                                        </div>
+
+                                        <div class="popup-delivery__submit">
+                                            <button class="c-button c-button__default">Выбрать</button>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="popup-delivery__col">
+
+                                        <div class="popup-delivery__map" id="popup-delivery__delivery-map"></div>
+                                        
+                                    </div>
                                 </div>
                             </div>
 

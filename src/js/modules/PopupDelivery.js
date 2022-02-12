@@ -19,11 +19,6 @@ const PopupDelivery = {
 		this["_" + target + "Map"].refresh();
 	},
 
-	_handleWindowResize() {
-		this._yourselfMap.refresh();
-		this._deliveryMap.refresh();
-	},
-
 	init() {
 		showPopup(".popup-delivery__btn-open", "#popup-delivery");
 
@@ -33,31 +28,27 @@ const PopupDelivery = {
 			this._handleTabClick.bind(this)
 		);
 
-		$(window).on(
-			"resize",
-			$.debounce(250, this._handleWindowResize.bind(this))
-		);
-
 		ymaps.ready(() => {
-			this._yourselfMap = new Map({
-				el: "popup-delivery__yourself-map",
+			const options = {
 				center: [55.7600134479554, 37.6234488098733],
 				zoom: 8,
 				dataUrl: "data/map-addresses.json",
 				iconUrl: "data/map-icon.png",
 				iconOffset: [-28, -68],
 				iconSize: [56, 68],
-			});
+			};
 
-			this._deliveryMap = new Map({
-				el: "popup-delivery__delivery-map",
-				center: [55.7600134479554, 37.6234488098733],
-				zoom: 8,
-				dataUrl: "data/map-addresses.json",
-				iconUrl: "data/map-icon.png",
-				iconOffset: [-28, -68],
-				iconSize: [56, 68],
-			});
+			this._yourselfMap = new Map(
+				Object.assign({}, options, {
+					el: "popup-delivery__yourself-map",
+				})
+			);
+
+			this._deliveryMap = new Map(
+				Object.assign({}, options, {
+					el: "popup-delivery__delivery-map",
+				})
+			);
 		});
 	},
 

@@ -65,6 +65,7 @@
   max-width: 1100px;
 }
 .popup-delivery__input {
+  position: relative;
   margin: 20px 0;
 }
 .popup-delivery__input .c-input {
@@ -83,6 +84,30 @@
 .popup-delivery__map {
   height: 100%;
   background: #f3f3f3;
+}
+.popup-delivery__select {
+  display: none;
+  position: absolute;
+  top: 100%;
+  margin-top: 20px;
+  background: #fff;
+  overflow: auto;
+  max-height: 300px;
+  border-radius: 5px;
+  width: 100%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+.popup-delivery__select.active {
+  display: block;
+}
+.popup-delivery__select div {
+  border-top: 1px solid #f3f3f3;
+  padding: 11px 10px;
+  cursor: pointer;
+}
+.popup-delivery__select div:first-child {
+  border-top: 0;
 }
 
 @media (max-width: 991.98px) {

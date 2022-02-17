@@ -4,223 +4,93 @@ layout: default.hbs
 ---
 
 
-<a href="#" class='popup-delivery__btn-open' style="display: none;">Показать попап</a>
+<script>
+    function onSavedCallback(state) {
+        alert('Привет! Я колбек. Меня можно задать в data-атрибутах. В меня передается то же состояние, которое пишется в инпут:' + state + '. Можно использовать для синхронизации с бэкендом и вызова функций битрикса.');
+    }
+</script>
 
-<div class="mfp-wrap popup-delivery" id="popup-delivery" tabindex="-1" style="overflow-x: hidden; overflow-y: auto;">
+<div class="mfp-wrap popup-delivery is-visible" id="popup-delivery"  tabindex="-1" style="overflow-x: hidden; overflow-y: auto;" v-cloak
+
+    data-cafes-url="data/cafes.json" 
+    data-addresses-url="data/addresses.json"
+    data-base-map-options='{"iconUrl":"images/popup-delivery/icon-default.png","iconOffset":[-28,-68],"iconSize":[56,68]}'
+    data-delivery-map-options='{"center":[55.7600134479554,37.6234488098733],"zoom":8}'
+    data-cafes-map-options='{"center":[55.7600134479554,37.6234488098733],"zoom":8}'
+    data-onsaved="onSavedCallback">
+
     <div class="mfp-container mfp-inline-holder">
         <div class="mfp-content">
             <div class="mfp-content-bg"></div>
             <div class="popup popup-delivery__window">
                 <div class="popup-box">
                     <h3 class="popup-title">Выберите способ получения <span class="popup-close"></span></h3>
-                    <div id="comp_69bfdcdad2502a21fd92bcc10d315dd3">
-                        <div class="popup-body popup-delivery__body">
-                            
-                            <div class="popup-delivery__pane active" id="popup-delivery__yourself">
-                                <div class="popup-delivery__row">
-                                    <div class="popup-delivery__col">
+                    <div class="popup-body popup-delivery__body">
 
-                                        <div class="popup-delivery__tabs">
-                                            <div class="popup-delivery__tabs__list">
-                                                <div class="popup-delivery__tabs__col">
-                                                    <a href="#" data-target="yourself" class="popup-delivery__tabs__item active">Самовывоз</a>
-                                                </div>
-                                                <div class="popup-delivery__tabs__col">
-                                                    <a href="#" data-target="delivery" class="popup-delivery__tabs__item">Доставка</a>
-                                                </div>
-                                            </div>
+                        <span>
+                            Хранилище состояния. 
+                            <br>При нажатии "Выбрать" сохраняет состояние. 
+                            <br>При инициализации загружает.
+                            <br>Для сокрытия поменять тип на "hidden".
+                        </span>
+                        <input type="text" class="c-input" value='{"currentTab":"yourself","selectedCafe":{"id":"372","title":"АндерСон Гиляровского"},"address":""}' id="popup-delivery__state">
+
+                        <div class="popup-delivery__row">
+                            <div class="popup-delivery__col">
+
+                                <div class="popup-delivery__tabs">
+                                    <div class="popup-delivery__tabs__list">
+                                        <div class="popup-delivery__tabs__col">
+                                            <a href="#" :class="['popup-delivery__tabs__item', {'active': currentTab === 'yourself'}]"
+                                                @click="currentTab = 'yourself'">Самовывоз</a>
                                         </div>
-
-                                        <div class="popup-delivery__input">
-                                            <input class="c-input" type="text" placeholder="Выберите интересующее вас кафе">
-
-                                            <div class="popup-delivery__select active">
-                                                <div data-id="84817">
-                                                    АндерСон на Большой Семеновской
-                                                </div>
-                                                <div data-id="372">
-                                                    АндерСон Гиляровского
-                                                </div>
-                                                <div data-id="85784">
-                                                    АндерСон на Льва Толстого
-                                                </div>
-                                                <div data-id="61959">
-                                                    АндерСон в Воронеже
-                                                </div>
-                                                <div data-id="56079">
-                                                    АндерСон Митино ТРЦ «Ладья»
-                                                </div>
-                                                <div data-id="85785">
-                                                    Вилла АндерСон
-                                                </div>
-                                                <div data-id="85786">
-                                                    АндерСон на Маршала Жукова
-                                                </div>
-                                                <div data-id="371">
-                                                    АндерСон Сокол
-                                                </div>
-                                                <div data-id="375">
-                                                    АндерСон в ЖК Каскад на набережной Туполева
-                                                </div>
-                                                <div data-id="376">
-                                                    АндерСон Островитянова
-                                                </div>
-                                                <div data-id="379">
-                                                    АндерСон Братиславская
-                                                </div>
-                                                <div data-id="167291">
-                                                    АндерСон Владимир
-                                                </div>
-                                                <div data-id="381">
-                                                    АндерСон Формула Кино в ТРЦ «Фестиваль»
-                                                </div>
-                                                <div data-id="382">
-                                                    АндерСон в Ярославле
-                                                </div>
-                                                <div data-id="386">
-                                                    АндерСон на Обручева
-                                                </div>
-                                                <div data-id="87426">
-                                                    АндерСон Донской Олимп
-                                                </div>
-                                                <div data-id="387">
-                                                    АндерСон Красносельская
-                                                </div>
-                                                <div data-id="388">
-                                                    АндерСон «Пятая Авеню» на Маршала Бирюзова
-                                                </div>
-                                                <div data-id="390">
-                                                    АндерСон Таганский парк
-                                                </div>
-                                                <div data-id="121735">
-                                                    АндерСон в Краснодаре
-                                                </div>
-                                                <div data-id="393">
-                                                    АндерСон Королев
-                                                </div>
-                                                <div data-id="395">
-                                                    АндерСон на Даче. ВДНХ.
-                                                </div>
-                                                <div data-id="396">
-                                                    АндерСон ЖК Шуваловский
-                                                </div>
-                                                <div data-id="400">
-                                                    АндерСон на Кусковской
-                                                </div>
-                                                <div data-id="402">
-                                                    АндерСон Медведково
-                                                </div>
-                                                <div data-id="403">
-                                                    АндерСон Гагаринский
-                                                </div>
-                                                <div data-id="404">
-                                                    АндерСон в Нижнем Новгороде
-                                                </div>
-                                                <div data-id="408">
-                                                    АндерСон в Московском
-                                                </div>
-                                                <div data-id="411">
-                                                    АндерСон Крылатское
-                                                </div>
-                                                <div data-id="412">
-                                                    АндерСон парк Царицыно
-                                                </div>
-                                                <div data-id="414">
-                                                    АндерСон в Тюмени
-                                                </div>
-                                                <div data-id="134309">
-                                                    Андерсон Фили Град
-                                                </div>
-                                                <div data-id="151517">
-                                                    АндерСон Пушкино
-                                                </div>
-                                                <div data-id="131807">
-                                                    АндерСон Домодедово
-                                                </div>
-                                                <div data-id="120806">
-                                                    АндерСон Таганская улица 36
-                                                </div>
-                                                <div data-id="158190">
-                                                    АндерСон ТРК «FORT ЯСЕНЕВО»
-                                                </div>
-                                                <div data-id="61949">
-                                                    АндерСон Жулебино ТЦ «Динамит»
-                                                </div>
-                                                <div data-id="162341">
-                                                    АндерСон Воронцовский парк
-                                                </div>
-                                                <div data-id="165560">
-                                                    АндерСон Бутово
-                                                </div>
-                                                <div data-id="162342">
-                                                    АндерСон Галерея Аэропорт
-                                                </div>
-                                                <div data-id="167106">
-                                                    Андерсон "На бегу" ТЦ Метрополис
-                                                </div>
-                                                <div data-id="167364">
-                                                    Кафе «На бегу» в ТЦ ОКЕАНИЯ
-                                                </div>
-                                                <div data-id="162343">
-                                                    АндерСон ТЦ Калужский
-                                                </div>
-                                            </div>
+                                        <div class="popup-delivery__tabs__col">
+                                            <a href="#" :class="['popup-delivery__tabs__item', {'active': currentTab === 'delivery'}]"
+                                                @click="currentTab = 'delivery'">Доставка</a>
                                         </div>
-
-                                        <div class="popup-delivery__submit">
-                                            <button class="c-button c-button__default">Выбрать</button>
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="popup-delivery__col">
-
-                                        <div class="popup-delivery__map" id="popup-delivery__yourself-map"></div>
-                                        
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="popup-delivery__pane" id="popup-delivery__delivery">
-                                <div class="popup-delivery__row">
-                                    <div class="popup-delivery__col">
 
-                                        <div class="popup-delivery__tabs">
-                                            <div class="popup-delivery__tabs__list">
-                                                <div class="popup-delivery__tabs__col">
-                                                    <a href="#" data-target="yourself" class="popup-delivery__tabs__item">Самовывоз</a>
-                                                </div>
-                                                <div class="popup-delivery__tabs__col">
-                                                    <a href="#" data-target="delivery" class="popup-delivery__tabs__item active">Доставка</a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="popup-delivery__input">
-                                            <input class="c-input" type="text" placeholder="Начните вводить адрес">
-
-                                            
-                                        </div>
-
-                                        <div class="popup-delivery__submit">
-                                            <button class="c-button c-button__default">Выбрать</button>
-                                        </div>
-                                        
+                                <div class="popup-delivery__input" v-show="currentTab === 'yourself'" >
+                                    <div class="popup-delivery__input__item" v-if="selectedCafe">
+                                        <input class="c-input" type="text" :value="selectedCafe.title" readonly @keyup="openCafesList()" @focus="openCafesList()">
+                                        <button type="button" class="popup-delivery__input__close" @click="depickCafe()"></button>
                                     </div>
-                                    <div class="popup-delivery__col">
+                                    
+                                    <div class="popup-delivery__input__item" v-else>
+                                        <input class="c-input" type="text" placeholder="Выберите интересующее вас кафе" @keyup="openCafesList()" @focus="openCafesList()">
+                                    </div>
 
-                                        <div class="popup-delivery__map" id="popup-delivery__delivery-map"></div>
-                                        
+                                    <div :class="['popup-delivery__select', {'active': isCafesListOpen}]" >
+                                        <div v-for="cafe in loadedCafes" :key="cafe.id" @click="pickCafe(cafe)">
+                                            \{{ cafe.title }}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
+                                <div class="popup-delivery__input" v-show="currentTab === 'delivery'">
+                                    <input class="c-input" type="text" placeholder="Начните вводить адрес" v-model="address" id="popup-delivery__delivery-input">
+                                </div>
+
+                                <div class="popup-delivery__submit" v-if="selectedCafe">
+                                    <button class="c-button c-button__default" @click="saveAndClose()">Выбрать</button>
+                                </div>
+                                
+                            </div>
+                            <div class="popup-delivery__col">
+
+                                <div class="popup-delivery__map" id="popup-delivery__cafes-map" v-show="currentTab === 'yourself'"></div>
+                                <div class="popup-delivery__map" id="popup-delivery__delivery-map" v-show="currentTab === 'delivery'"></div>
+                                
+                            </div>
                         </div>
-                        <!--popup-body-->
-                        
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 

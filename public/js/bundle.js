@@ -2,97 +2,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/js/modules/OfficesMap.js":
-/*!**************************************!*\
-  !*** ./src/js/modules/OfficesMap.js ***!
-  \**************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-var OfficesMap = /*#__PURE__*/function () {
-  function OfficesMap(options) {
-    var _this = this;
-
-    _classCallCheck(this, OfficesMap);
-
-    this._map = null;
-    this._placemarks = [];
-    this._loadedList = [];
-    this._options = Object.assign({}, options);
-
-    this._addListeners();
-
-    this._drawMap();
-
-    $.getJSON(this._options.dataUrl).done(function (data) {
-      _this._loadedList = data;
-
-      _this._drawMarkers();
-    }).fail(function () {
-      console.error("Map addresses loading is failed.");
-    });
-  }
-
-  _createClass(OfficesMap, [{
-    key: "_handleWindowResize",
-    value: function _handleWindowResize() {
-      this.refresh();
-    }
-  }, {
-    key: "_addListeners",
-    value: function _addListeners() {
-      $(window).on("resize", $.debounce(250, this._handleWindowResize.bind(this)));
-    }
-  }, {
-    key: "_drawMap",
-    value: function _drawMap() {
-      this._map = new ymaps.Map(this._options.el, {
-        controls: [],
-        center: this._options.center,
-        zoom: this._options.zoom || 10
-      });
-    }
-  }, {
-    key: "_drawMarkers",
-    value: function _drawMarkers() {
-      var _this2 = this;
-
-      this._loadedList.forEach(function (item) {
-        var placemark = new ymaps.Placemark(item.position, {
-          balloonContentBody: item.content,
-          hintContent: item.title
-        }, {
-          iconLayout: "default#image",
-          iconImageHref: _this2._options.iconUrl,
-          iconImageOffset: _this2._options.iconOffset,
-          iconImageSize: _this2._options.iconSize
-        });
-
-        _this2._map.geoObjects.add(placemark);
-
-        _this2._placemarks[item.id] = placemark;
-      });
-    }
-  }, {
-    key: "refresh",
-    value: function refresh() {
-      this._map.container.fitToViewport();
-    }
-  }]);
-
-  return OfficesMap;
-}();
-
-/* harmony default export */ __webpack_exports__["default"] = (OfficesMap);
-
-/***/ }),
-
 /***/ "./src/js/modules/PopupDelivery.js":
 /*!*****************************************!*\
   !*** ./src/js/modules/PopupDelivery.js ***!
@@ -100,47 +9,256 @@ var OfficesMap = /*#__PURE__*/function () {
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _OfficesMap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./OfficesMap */ "./src/js/modules/OfficesMap.js");
-
-var PopupDelivery = {
-  _yourselfMap: null,
-  _deliveryMap: null,
-  _handleTabClick: function _handleTabClick(e) {
-    e.preventDefault();
-    var target = $(e.currentTarget).data("target");
-    $("#popup-delivery__" + target).siblings(".popup-delivery__pane").removeClass("active").end().addClass("active");
-    this["_" + target + "Map"].refresh();
+var CafesMap = {
+  _map: null,
+  _options: {},
+  _handleWindowResize: function _handleWindowResize() {
+    this.refresh();
   },
-  init: function init() {
+  _handleBallonApply: function _handleBallonApply(e) {
+    var cafeId = $(e.currentTarget).data("id");
+    PopupDelivery.App.pickCafeById(cafeId);
+
+    this._map.balloon.close(true);
+  },
+  _createMap: function _createMap() {
+    var baseOptions = $("#popup-delivery").data("base-map-options");
+    var cafeOptions = $("#popup-delivery").data("cafes-map-options");
+    this._options = Object.assign({}, baseOptions, cafeOptions);
+    this._map = new ymaps.Map("popup-delivery__cafes-map", this._options);
+  },
+  addCafes: function addCafes(cafes) {
     var _this = this;
 
-    showPopup(".popup-delivery__btn-open", "#popup-delivery");
-    $(document).on("click", ".popup-delivery__tabs__item", this._handleTabClick.bind(this));
-    ymaps.ready(function () {
-      var options = {
-        center: [55.7600134479554, 37.6234488098733],
-        zoom: 8,
-        dataUrl: "data/map-addresses.json",
-        iconUrl: "data/map-icon.png",
-        iconOffset: [-28, -68],
-        iconSize: [56, 68]
-      };
-      _this._yourselfMap = new _OfficesMap__WEBPACK_IMPORTED_MODULE_0__["default"](Object.assign({}, options, {
-        el: "popup-delivery__yourself-map"
-      }));
-      _this._deliveryMap = new _OfficesMap__WEBPACK_IMPORTED_MODULE_0__["default"](Object.assign({}, options, {
-        el: "popup-delivery__delivery-map"
-      }));
+    cafes.forEach(function (cafe) {
+      var balloonHtml = $(cafe.content).append("<button type=\"button\" class=\"c-button c-button__default popup-delivery__balloon__apply\" data-id=\"".concat(cafe.id, "\">\n\t\t\t\t\t\t\u0412\u044B\u0431\u0440\u0430\u0442\u044C\n\t\t\t\t\t</button>")).html();
+      var placemark = new ymaps.Placemark(cafe.location, {
+        balloonContentBody: balloonHtml,
+        hintContent: cafe.title
+      }, {
+        iconLayout: "default#image",
+        iconImageHref: _this._options.iconUrl,
+        iconImageOffset: _this._options.iconOffset,
+        iconImageSize: _this._options.iconSize
+      });
+
+      _this._map.geoObjects.add(placemark);
     });
   },
-  open: function open() {
-    $(".popup-delivery__btn-open").trigger("click");
+  refresh: function refresh() {
+    this._map.container.fitToViewport();
+  },
+  init: function init() {
+    $(document).on("click", ".popup-delivery__balloon__apply", this._handleBallonApply.bind(this));
+    $(window).on("resize", $.debounce(250, this._handleWindowResize.bind(this)));
+
+    this._createMap();
   }
 };
-$(function () {
+var DeliveryMap = {
+  _map: null,
+  _options: {},
+  _objectManager: null,
+  _suggestView: null,
+  _handleWindowResize: function _handleWindowResize() {
+    this.refresh();
+  },
+  _createMap: function _createMap() {
+    var baseOptions = $("#popup-delivery").data("base-map-options");
+    var deliveryOptions = $("#popup-delivery").data("delivery-map-options");
+    this._options = Object.assign({}, baseOptions, deliveryOptions);
+    this._map = new ymaps.Map("popup-delivery__delivery-map", this._options);
+    this._objectManager = new ymaps.ObjectManager({
+      clusterize: true,
+      clusterHasBalloon: false,
+      geoObjectOpenBalloonOnClick: true
+    });
+
+    this._map.geoObjects.add(this._objectManager);
+  },
+  _createSuggestView: function _createSuggestView() {
+    var _this2 = this;
+
+    this._suggestView = new ymaps.SuggestView("popup-delivery__delivery-input", {
+      provider: this._provider
+    });
+
+    this._suggestView.events.add("select", function (e) {
+      var address = e.get("item");
+      PopupDelivery.App.address = address.displayName;
+
+      _this2._objectManager.removeAll();
+
+      _this2._objectManager.add({
+        type: "FeatureCollection",
+        features: [{
+          type: "Feature",
+          id: address.id,
+          geometry: {
+            type: "Point",
+            coordinates: address.location
+          },
+          properties: {
+            balloonContentBody: address.displayName,
+            hintContent: address.displayName
+          },
+          options: {
+            preset: "islands#icon"
+          }
+        }]
+      });
+
+      _this2._map.setCenter(address.location);
+    });
+  },
+  _provider: {
+    suggest: function suggest(searchText, options) {
+      var matches = PopupDelivery.App.loadedAddresses.filter(function (address) {
+        return (address.title + "").toLowerCase().includes(searchText.toLowerCase());
+      });
+      var results = [];
+      var count = Math.min(options.results, matches.length);
+
+      for (var i = 0; i < count; i++) {
+        results.push({
+          displayName: matches[i].title,
+          value: matches[i].title,
+          id: matches[i].id,
+          location: matches[i].location
+        });
+      }
+
+      return ymaps.vow.resolve(results);
+    }
+  },
+  refresh: function refresh() {
+    this._map.container.fitToViewport();
+  },
+  init: function init() {
+    $(window).on("resize", $.debounce(250, this._handleWindowResize.bind(this)));
+
+    this._createMap();
+
+    this._createSuggestView();
+  }
+};
+var PopupDelivery = {
+  App: null,
+  _handleOutsideClick: function _handleOutsideClick(e) {
+    if (this.App !== null && $(e.target).closest(".popup-delivery__input").length === 0) {
+      this.App.closeCafesList();
+    }
+  },
+  open: function open() {
+    $("#popup-delivery__caller").trigger("click");
+  },
+  close: function close() {
+    $("#popup-delivery .popup-close").trigger("click");
+  },
+  init: function init() {
+    $(document).on("click", this._handleOutsideClick.bind(this));
+
+    try {
+      showPopup("#popup-delivery__caller", "#popup-delivery");
+    } catch (e) {
+      console.log(e);
+    }
+
+    this.App = new Vue({
+      el: "#popup-delivery",
+      data: function data() {
+        return {
+          loadedCafes: [],
+          loadedAddresses: [],
+          selectedCafe: null,
+          address: "",
+          currentTab: "yourself",
+          isCafesListOpen: false
+        };
+      },
+      created: function created() {
+        this.loadData();
+        var initial = JSON.parse($("#popup-delivery__state").val());
+        this.currentTab = initial.currentTab;
+
+        switch (this.currentTab) {
+          case "yourself":
+            this.selectedCafe = initial.selectedCafe;
+            break;
+
+          case "delivery":
+            this.address = initial.address;
+            break;
+        }
+      },
+      methods: {
+        loadData: function loadData() {
+          var _this3 = this;
+
+          var cafesUrl = $("#popup-delivery").data("cafes-url");
+          var addressesUrl = $("#popup-delivery").data("addresses-url");
+          $.when($.getJSON(cafesUrl), $.getJSON(addressesUrl)).done(function (xhr1, xhr2) {
+            _this3.loadedCafes = xhr1[0];
+            _this3.loadedAddresses = xhr2[0];
+            ymaps.ready(function () {
+              CafesMap.init();
+              CafesMap.addCafes(_this3.loadedCafes);
+              DeliveryMap.init();
+            });
+          }).fail(function (error) {
+            console.log(error);
+          });
+        },
+        pickCafe: function pickCafe(cafe) {
+          this.selectedCafe = cafe;
+          this.closeCafesList();
+        },
+        pickCafeById: function pickCafeById(id) {
+          this.pickCafe(this.loadedCafes.find(function (cafe) {
+            return cafe.id == id;
+          }));
+        },
+        depickCafe: function depickCafe() {
+          this.selectedCafe = null;
+          this.closeCafesList();
+        },
+        openCafesList: function openCafesList() {
+          this.isCafesListOpen = true;
+        },
+        closeCafesList: function closeCafesList() {
+          this.isCafesListOpen = false;
+        },
+        saveAndClose: function saveAndClose() {
+          var state = JSON.stringify({
+            currentTab: this.currentTab,
+            selectedCafe: Object.assign({}, {
+              id: this.selectedCafe.id,
+              title: this.selectedCafe.title
+            }),
+            address: this.address
+          });
+          $("#popup-delivery__state").val(state);
+          var onsaved = $("#popup-delivery").data("onsaved");
+
+          if (typeof window[onsaved] === "function") {
+            window[onsaved](state);
+          }
+
+          PopupDelivery.close();
+        }
+      }
+    });
+  }
+};
+
+if ($("#popup-delivery").length) {
   PopupDelivery.init();
   PopupDelivery.open();
-});
+}
+
+window.CafesMap = CafesMap;
+window.DeliveryMap = DeliveryMap;
+window.PopupDelivery = PopupDelivery;
 /* harmony default export */ __webpack_exports__["default"] = (PopupDelivery);
 
 /***/ })

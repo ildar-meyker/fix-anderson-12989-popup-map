@@ -6819,7 +6819,7 @@
 
 <script>
     function onSavedCallback(state) {
-        alert('Привет! Я колбек. Меня можно задать в data-атрибутах. В меня передается то же состояние, которое пишется в инпут:' + state + '. Можно использовать для синхронизации с бэкендом и вызова функций битрикса.');
+        alert('Я колбек. Меня можно задать в data-атрибутах. Получаю то же состояние, которое пишется в инпут:' + state + '. Можно использовать для синхронизации с бэкендом и вызова функций битрикса.');
     }
 </script>
 
@@ -6840,13 +6840,16 @@
                     <h3 class="popup-title">Выберите способ получения <span class="popup-close"></span></h3>
                     <div class="popup-body popup-delivery__body">
 
-                        <span>
-                            Хранилище состояния. 
-                            <br>При нажатии "Выбрать" сохраняет состояние. 
-                            <br>При инициализации загружает.
-                            <br>Для сокрытия поменять тип на "hidden".
-                        </span>
-                        <input type="text" class="c-input" value='{"currentTab":"yourself","selectedCafe":{"id":"372","title":"АндерСон Гиляровского"},"address":""}' id="popup-delivery__state">
+                        <ul id="debug">
+                            <li>
+                                При нажатии "Выбрать" сохраняет в инпут состояние . 
+                                При инициализации загружается из него.
+                                <button type="button" onclick="document.getElementById('debug').style.display = 'none';">Ок!</button>
+                            </li>
+                            <li style="margin: 10px 0 20px 0;">
+                                <input type="text" class="c-input" value='{"currentTab":"yourself","selectedCafe":{"id":"372","title":"АндерСон Гиляровского"},"address":""}' id="popup-delivery__state">
+                            </li>
+                        </ul>
 
                         <div class="popup-delivery__row">
                             <div class="popup-delivery__col">
@@ -6855,39 +6858,47 @@
                                     <div class="popup-delivery__tabs__list">
                                         <div class="popup-delivery__tabs__col">
                                             <a href="#" :class="['popup-delivery__tabs__item', {'active': currentTab === 'yourself'}]"
-                                                @click="currentTab = 'yourself'">Самовывоз</a>
+                                                @click.prevent="currentTab = 'yourself'">Самовывоз</a>
                                         </div>
                                         <div class="popup-delivery__tabs__col">
                                             <a href="#" :class="['popup-delivery__tabs__item', {'active': currentTab === 'delivery'}]"
-                                                @click="currentTab = 'delivery'">Доставка</a>
+                                                @click.prevent="currentTab = 'delivery'">Доставка</a>
                                         </div>
                                     </div>
                                 </div>
 
+                                <div v-show="currentTab === 'yourself'">
+                                    <div class="popup-delivery__input">
+                                        <div class="popup-delivery__input__item" v-if="selectedCafe">
+                                            <input class="c-input" type="text" :value="selectedCafe.title" readonly @keyup="openCafesList()" @focus="openCafesList()">
+                                            <button type="button" class="popup-delivery__input__close" @click="depickCafe()"></button>
+                                        </div>
+                                        
+                                        <div class="popup-delivery__input__item" v-else>
+                                            <input class="c-input" type="text" placeholder="Выберите интересующее вас кафе" @keyup="openCafesList()" @focus="openCafesList()">
+                                        </div>
 
-                                <div class="popup-delivery__input" v-show="currentTab === 'yourself'" >
-                                    <div class="popup-delivery__input__item" v-if="selectedCafe">
-                                        <input class="c-input" type="text" :value="selectedCafe.title" readonly @keyup="openCafesList()" @focus="openCafesList()">
-                                        <button type="button" class="popup-delivery__input__close" @click="depickCafe()"></button>
-                                    </div>
-                                    
-                                    <div class="popup-delivery__input__item" v-else>
-                                        <input class="c-input" type="text" placeholder="Выберите интересующее вас кафе" @keyup="openCafesList()" @focus="openCafesList()">
-                                    </div>
-
-                                    <div :class="['popup-delivery__select', {'active': isCafesListOpen}]" >
-                                        <div v-for="cafe in loadedCafes" :key="cafe.id" @click="pickCafe(cafe)">
-                                            {{ cafe.title }}
+                                        <div :class="['popup-delivery__select', {'active': isCafesListOpen}]" >
+                                            <div v-for="cafe in loadedCafes" :key="cafe.id" @click="pickCafe(cafe)">
+                                                {{ cafe.title }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="popup-delivery__input" v-show="currentTab === 'delivery'">
-                                    <input class="c-input" type="text" placeholder="Начните вводить адрес" v-model="address" id="popup-delivery__delivery-input">
-                                </div>
+                                    <div class="popup-delivery__submit" v-if="selectedCafe">
+                                        <button class="c-button c-button__default" @click="saveAndClose()">Выбрать</button>
+                                    </div>
 
-                                <div class="popup-delivery__submit" v-if="selectedCafe">
-                                    <button class="c-button c-button__default" @click="saveAndClose()">Выбрать</button>
+                                </div>
+                                
+                                <div v-show="currentTab === 'delivery'">
+                                    <div class="popup-delivery__input" >
+                                        <input class="c-input" type="text" placeholder="Начните вводить адрес" v-model="address" id="popup-delivery__delivery-input">
+                                    </div>
+
+                                    <div class="popup-delivery__submit" v-if="address.trim().length">
+                                        <button class="c-button c-button__default" @click="saveAndClose()">Выбрать</button>
+                                    </div>
                                 </div>
                                 
                             </div>

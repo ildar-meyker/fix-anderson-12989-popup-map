@@ -235,7 +235,7 @@ var PopupDelivery = {
               id: this.selectedCafe.id,
               title: this.selectedCafe.title
             }),
-            address: this.address
+            address: this.address.trim()
           });
           $("#popup-delivery__state").val(state);
           var onsaved = $("#popup-delivery").data("onsaved");

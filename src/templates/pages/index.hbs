@@ -12,9 +12,7 @@ layout: default.hbs
 
 <div class="mfp-wrap popup-delivery is-visible" id="popup-delivery"  tabindex="-1" style="overflow-x: hidden; overflow-y: auto;" v-cloak
 
-    data-cafes-url="data/cafes.json" 
-    data-addresses-url="data/addresses.json"
-    data-base-map-options='{"iconUrl":"images/popup-delivery/icon-default.png","iconOffset":[-28,-68],"iconSize":[56,68]}'
+    data-base-map-options='{"iconUrl":"images/popup-delivery/icon-default.png", "selectedIconUrl": "images/popup-delivery/icon-selected.png", "iconOffset":[-28,-68],"iconSize":[56,68]}'
     data-delivery-map-options='{"center":[55.7600134479554,37.6234488098733],"zoom":8}'
     data-cafes-map-options='{"center":[55.7600134479554,37.6234488098733],"zoom":8}'
     data-onsaved="onSavedCallback">
@@ -34,7 +32,7 @@ layout: default.hbs
                                 <button type="button" onclick="document.getElementById('debug').style.display = 'none';">Ок!</button>
                             </li>
                             <li style="margin: 10px 0 20px 0;">
-                                <input type="text" class="c-input" value='{"currentTab":"yourself","selectedCafe":{"id":"372","title":"АндерСон Гиляровского"},"address":""}' id="popup-delivery__state">
+                                <input type="text" class="c-input" value='{"currentTab":"delivery","selectedCafe":{"id":"372","title":"АндерСон Гиляровского"},"selectedAddress":{"id":1,"title":"Казань","location":["55.78360130385409","49.133704199840146"]}}' id="popup-delivery__state">
                             </li>
                         </ul>
 
@@ -55,35 +53,33 @@ layout: default.hbs
                                 </div>
 
                                 <div v-show="currentTab === 'yourself'">
-                                    <div class="popup-delivery__input">
-                                        <div class="popup-delivery__input__item" v-if="selectedCafe">
-                                            <input class="c-input" type="text" :value="selectedCafe.title" readonly @keyup="openCafesList()" @focus="openCafesList()">
-                                            <button type="button" class="popup-delivery__input__close" @click="depickCafe()"></button>
-                                        </div>
-                                        
-                                        <div class="popup-delivery__input__item" v-else>
-                                            <input class="c-input" type="text" placeholder="Выберите интересующее вас кафе" @keyup="openCafesList()" @focus="openCafesList()">
-                                        </div>
 
-                                        <div :class="['popup-delivery__select', {'active': isCafesListOpen}]" >
-                                            <div v-for="cafe in loadedCafes" :key="cafe.id" @click="pickCafe(cafe)">
-                                                \{{ cafe.title }}
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <select-cafe 
+                                        ref="selectCafe"
+                                        url="data/cafes.json" 
+                                        placeholder="Выберите интересующее вас кафе"
+                                        :initial="selectedCafe"
+                                        @loaded="onCafesLoaded"
+                                        @changed="updateCafe">
+                                    </select-cafe>
 
-                                    <div class="popup-delivery__submit" v-if="selectedCafe">
+                                    <div class="popup-delivery__submit" v-show="selectedCafe !== null">
                                         <button class="c-button c-button__default" @click="saveAndClose()">Выбрать</button>
                                     </div>
 
                                 </div>
                                 
                                 <div v-show="currentTab === 'delivery'">
-                                    <div class="popup-delivery__input" >
-                                        <input class="c-input" type="text" placeholder="Начните вводить адрес" v-model="address" id="popup-delivery__delivery-input">
-                                    </div>
+                                    
+                                    <select-address 
+                                        url="data/addresses.json" 
+                                        param="query" 
+                                        :initial="selectedAddress"
+                                        placeholder="Начните вводить адрес"
+                                        @changed="updateAddress">
+                                    </select-address>
 
-                                    <div class="popup-delivery__submit" v-if="address.trim().length">
+                                    <div class="popup-delivery__submit" v-show="selectedAddress !== null">
                                         <button class="c-button c-button__default" @click="saveAndClose()">Выбрать</button>
                                     </div>
                                 </div>
@@ -91,8 +87,10 @@ layout: default.hbs
                             </div>
                             <div class="popup-delivery__col">
 
-                                <div class="popup-delivery__map" id="popup-delivery__cafes-map" v-show="currentTab === 'yourself'"></div>
-                                <div class="popup-delivery__map" id="popup-delivery__delivery-map" v-show="currentTab === 'delivery'"></div>
+                                <div class="popup-delivery__map">
+                                    <div :class="['popup-delivery__map__image', {active: currentTab === 'yourself'}]" id="popup-delivery__cafes-map"></div>
+                                    <div :class="['popup-delivery__map__image', {active: currentTab === 'delivery'}]" id="popup-delivery__delivery-map"></div>
+                                </div>
                                 
                             </div>
                         </div>

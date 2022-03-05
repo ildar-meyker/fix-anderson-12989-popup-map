@@ -1,6 +1,9 @@
 .popup-delivery[v-cloak] .popup-delivery__row {
   visibility: hidden;
 }
+.popup-delivery__balloon {
+  padding: 10px;
+}
 .popup-delivery__balloon__apply {
   margin-top: 20px;
 }
@@ -135,8 +138,21 @@
   font-size: 14px;
 }
 .popup-delivery__map {
+  position: relative;
+  height: 100%;
+}
+.popup-delivery__map__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
   background: #f3f3f3;
+  visibility: hidden;
+}
+.popup-delivery__map__image.active {
+  position: static;
+  visibility: visible;
 }
 .popup-delivery__select {
   display: none;
@@ -164,6 +180,25 @@
 }
 .popup-delivery__select div:hover {
   background: #fdfdfd;
+}
+.popup-delivery__loader {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  font-size: 24px;
+}
+.popup-delivery__loader:before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  border: 0.1em solid #c3c3c3;
+  border-right-color: transparent;
+  -webkit-animation: 1s popup-delivery-spin infinite;
+          animation: 1s popup-delivery-spin infinite;
+  display: block;
+  margin: 0 auto;
 }
 .popup-delivery .ymaps-2-1-79-suggest-item {
   padding: 0;
@@ -240,5 +275,21 @@
   .popup-delivery__caller--mobile {
     display: block;
     width: 100%;
+  }
+}
+@-webkit-keyframes popup-delivery-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes popup-delivery-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

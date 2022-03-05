@@ -1,5 +1,6 @@
 //Webpack requires this to work with directories
 const path = require("path");
+const { VueLoaderPlugin } = require("vue-loader");
 
 // This is main configuration object that tells Webpackw what to do.
 module.exports = {
@@ -14,6 +15,10 @@ module.exports = {
 
 	module: {
 		rules: [
+			{
+				test: /\.vue$/,
+				loader: "vue-loader",
+			},
 			{
 				test: /\.js$/,
 				exclude: /(node_modules)/,
@@ -43,6 +48,11 @@ module.exports = {
 			},
 		],
 	},
+
+	plugins: [
+		// make sure to include the plugin!
+		new VueLoaderPlugin(),
+	],
 
 	//default mode is production
 	mode: "development",
